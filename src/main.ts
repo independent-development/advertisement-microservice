@@ -10,7 +10,8 @@ import { ResponseInterceptor } from "@/interceptors/response.interceptor";
 async function bootstrapHttpService() {
   const app = await NestFactory.create(AppModule);
   await app.setGlobalPrefix("api");
-  await app.useGlobalGuards(new UserGuard());
+  const user_services = app.get("USER_SERVICES");
+  await app.useGlobalGuards(new UserGuard(user_services));
   await app.useGlobalFilters(new ErrorExceptionFilter());
   await app.useGlobalInterceptors(new ResponseInterceptor());
   await app.use(cookieParser());
@@ -22,9 +23,9 @@ async function bootstrapMicroservice() {
   const app = await NestFactory.createMicroservice(AppModule, {
     options: { host: "0.0.0.0", port: 5060 },
   });
-  await app.useGlobalGuards(new UserGuard());
+  const user_services = app.get("USER_SERVICES");
+  await app.useGlobalGuards(new UserGuard(user_services));
   await app.useGlobalFilters(new ErrorExceptionFilter());
-  await app.useGlobalInterceptors(new ResponseInterceptor());
   await app.listen();
 }
 
