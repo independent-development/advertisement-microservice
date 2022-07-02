@@ -7,7 +7,7 @@ export const client_module_config: ClientsModuleOptions = [
   {
     name: "USER_SERVICES",
     transport: Transport.TCP,
-    options: { host: "my-test-network", port: 5050 },
+    options: { host: "user-center-microservice-test", port: 5050 },
   },
 ];
 export const cache_module_config = {
