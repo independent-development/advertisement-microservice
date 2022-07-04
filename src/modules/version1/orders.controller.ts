@@ -2,7 +2,6 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { Controller, Request, Get, Post } from "@nestjs/common";
 
 import { AuthService } from "@/services/version1/auth.service";
-import { OrderService } from "@/services/version1/order.service";
 
 import { CommodityEntity } from "@/providers/commodity_entity.providers";
 import { OrderRecordEntity } from "@/providers/order_record_entity.providers";
@@ -12,7 +11,6 @@ import { TransactionRecordEntity } from "@/providers/transaction_record_entity.p
 export class OrdersController {
   constructor(
     private readonly auth: AuthService,
-    private readonly order: OrderService,
     @InjectRepository(OrderRecordEntity) private order_table,
     @InjectRepository(CommodityEntity) private commodity_record,
     @InjectRepository(TransactionRecordEntity) private transaction_record,
@@ -23,13 +21,8 @@ export class OrdersController {
     const { API_TOKEN } = request.cookies;
     const { user_id } = await this.auth.get_user_info(API_TOKEN);
     const result = await this.order_table.find({
-      relations: {
-        relation_commodity_id: true,
-      },
-      where: {
-        valid: "VALID",
-        user_id,
-      },
+      relations: ["relation_commodity"],
+      where: { active_status: "ACTIVE", user_id },
     });
     return result;
   }

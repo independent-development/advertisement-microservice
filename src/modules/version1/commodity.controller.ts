@@ -2,10 +2,8 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { Controller, Get, Request, Post } from "@nestjs/common";
 
 import { AuthService } from "@/services/version1/auth.service";
-import { OrderService } from "@/services/version1/order.service";
 
 import { CommodityEntity } from "@/providers/commodity_entity.providers";
-import { UserAccountEntity } from "@/providers/user_account_entity.providers";
 import { OrderRecordEntity } from "@/providers/order_record_entity.providers";
 import { TransactionRecordEntity } from "@/providers/transaction_record_entity.providers";
 
@@ -16,8 +14,6 @@ import get_calculate_computed_date from "@/utils/get_calculate_computed_date";
 export class CommodityController {
   constructor(
     private readonly auth: AuthService,
-    private readonly order: OrderService,
-    @InjectRepository(UserAccountEntity) private user_table,
     @InjectRepository(OrderRecordEntity) private order_table,
     @InjectRepository(CommodityEntity) private commodity_table,
     @InjectRepository(TransactionRecordEntity) private transaction_table,
@@ -28,10 +24,8 @@ export class CommodityController {
     const { API_TOKEN } = request.cookies;
     const { user_id } = await this.auth.get_user_info(API_TOKEN);
     const result = await this.commodity_table.find({
-      where: {
-        user_id,
-        valid: "VALID",
-      },
+      relations: ["relation_order"],
+      where: { user_id, active_status: "ACTIVE" },
     });
     return result;
   }
@@ -44,14 +38,28 @@ export class CommodityController {
     const {calculate_type,calculate_value,subject_detail_page,...otherRequest_body} = request.body;
     /*  prettier-ignore */
     const calculate_computed_date = get_calculate_computed_date(calculate_type,calculate_value);
-    const { identifiers } = await this.commodity_table.insert({
+
+    /** 创建广告 **/
+    const create_commodity = await this.commodity_table.create({
       subject_detail_page: subject_detail_page.join("/"),
       calculate_computed_date,
       ...otherRequest_body,
       user_id,
     });
-    await this.order.create(identifiers[0].commodity_id, user_id);
-    return true;
+
+    /** 创建订单 **/
+    const create_order = await this.order_table.create({ user_id });
+
+    create_commodity.relation_order = create_order;
+    create_order.relation_commodity = create_commodity;
+
+    const save_commodity = await this.commodity_table.save(create_commodity);
+    const save_order = await this.order_table.save(create_order);
+
+    return {
+      save_commodity_id: save_commodity.commodity_id,
+      save_order_id: save_order.order_id,
+    };
   }
 
   @Post("delete")

@@ -1,7 +1,7 @@
 import { Entity, PrimaryColumn, Column, OneToOne, Generated } from "typeorm";
 
 import { OrderRecordEntity } from "@/providers/order_record_entity.providers";
-import { valid_enums } from "@/emuns/valid_enums";
+import { active_status_enums } from "@/emuns/active_status_enums";
 
 @Entity({ database: "orders", name: "transaction_record" })
 export class TransactionRecordEntity {
@@ -19,15 +19,15 @@ export class TransactionRecordEntity {
   @Column({
     type: "enum",
     nullable: false,
-    enum: valid_enums,
-    default: valid_enums.VALID,
+    enum: active_status_enums,
+    default: active_status_enums.ACTIVE,
   })
-  valid: string | undefined;
+  active_status: string | undefined;
 
   @Column({
     type: "timestamp",
     nullable: false,
-    default: () => "CURRENT_TIMESTAMP",
+    default: () => "NOW()",
   })
   create_time: string | undefined;
 

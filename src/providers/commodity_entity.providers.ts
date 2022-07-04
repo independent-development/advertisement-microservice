@@ -1,16 +1,16 @@
 import {
   Entity,
   Column,
+  OneToOne,
   Generated,
   PrimaryGeneratedColumn,
-  OneToMany,
 } from "typeorm";
 
 import { OrderRecordEntity } from "@/providers/order_record_entity.providers";
 
-import { valid_enums } from "@/emuns/valid_enums";
 import { status_enums } from "@/emuns/status_enums";
 import { content_type_enums } from "@/emuns/content_type_enums";
+import { active_status_enums } from "@/emuns/active_status_enums";
 import { resource_type_enums } from "@/emuns/resource_type_enums";
 import { calculate_type_enums } from "@/emuns/calculate_type_enums";
 import { position_value_enums } from "@/emuns/position_value_enums";
@@ -112,10 +112,10 @@ export class CommodityEntity {
   @Column({
     type: "enum",
     nullable: false,
-    enum: valid_enums,
-    default: valid_enums.VALID,
+    enum: active_status_enums,
+    default: active_status_enums.ACTIVE,
   })
-  valid: string | undefined;
+  active_status: string | undefined;
 
   @Column({
     type: "enum",
@@ -128,7 +128,7 @@ export class CommodityEntity {
   @Column({
     type: "timestamp",
     nullable: false,
-    default: () => "CURRENT_TIMESTAMP",
+    default: () => "NOW()",
   })
   create_time: string | undefined;
 
@@ -149,6 +149,13 @@ export class CommodityEntity {
   user_id: string | undefined;
 
   /** 当前commodity可以对应多个order **/
-  @OneToMany(() => OrderRecordEntity, (order_record) => order_record.order_id)
-  relation_order_ids: OrderRecordEntity[] | undefined;
+  @OneToOne(
+    () => OrderRecordEntity,
+    (order_record) => order_record.relation_commodity,
+    {
+      nullable: true,
+      onDelete: "CASCADE",
+    },
+  )
+  relation_order: OrderRecordEntity | undefined;
 }
