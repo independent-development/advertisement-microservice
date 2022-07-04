@@ -1,4 +1,12 @@
-import { Entity, Column, Generated, PrimaryGeneratedColumn } from "typeorm";
+import {
+  Entity,
+  Column,
+  Generated,
+  PrimaryGeneratedColumn,
+  OneToMany,
+} from "typeorm";
+
+import { OrderRecordEntity } from "@/providers/order_record_entity.providers";
 
 import { valid_enums } from "@/emuns/valid_enums";
 import { status_enums } from "@/emuns/status_enums";
@@ -139,4 +147,8 @@ export class CommodityEntity {
   @Column()
   @Generated("uuid")
   user_id: string | undefined;
+
+  /** 当前commodity可以对应多个order **/
+  @OneToMany(() => OrderRecordEntity, (order_record) => order_record.order_id)
+  relation_order_ids: OrderRecordEntity[] | undefined;
 }

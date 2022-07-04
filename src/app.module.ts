@@ -8,6 +8,7 @@ import { OrdersController } from "@/modules/version1/orders.controller";
 import { CommodityController } from "@/modules/version1/commodity.controller";
 
 import { AuthService } from "@/services/version1/auth.service";
+import { OrderService } from "@/services/version1/order.service";
 
 import { CommodityEntity } from "@/providers/commodity_entity.providers";
 import { UserAccountEntity } from "@/providers/user_account_entity.providers";
@@ -40,6 +41,6 @@ import config from "@/configs";
     OrdersController,
     CommodityController,
   ],
-  providers: [AuthService],
+  providers: [AuthService, OrderService],
 })
 export class AppModule {}

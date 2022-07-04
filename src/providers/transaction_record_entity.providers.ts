@@ -1,5 +1,6 @@
-import { Entity, PrimaryColumn, Column, Generated } from "typeorm";
+import { Entity, PrimaryColumn, Column, OneToOne, Generated } from "typeorm";
 
+import { OrderRecordEntity } from "@/providers/order_record_entity.providers";
 import { valid_enums } from "@/emuns/valid_enums";
 
 @Entity({ database: "orders", name: "transaction_record" })
@@ -11,6 +12,9 @@ export class TransactionRecordEntity {
     nullable: false,
   })
   transaction_hash: string | undefined;
+
+  @OneToOne(() => OrderRecordEntity, (order_record) => order_record.order_id)
+  fk_order_id: OrderRecordEntity | undefined;
 
   @Column({
     type: "enum",

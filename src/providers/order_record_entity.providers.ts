@@ -1,7 +1,9 @@
 import {
   Entity,
   Column,
+  OneToOne,
   ManyToOne,
+  JoinColumn,
   PrimaryGeneratedColumn,
   Generated,
 } from "typeorm";
@@ -17,19 +19,29 @@ export class OrderRecordEntity {
   @PrimaryGeneratedColumn("uuid")
   order_id: string | undefined;
 
+  @Column({ nullable: true })
+  fk_commodity_id: string | undefined;
+
   /** 商品编号 **/
   @ManyToOne(
     () => CommodityEntity,
     (commodity_record) => commodity_record.commodity_id,
+    { nullable: true },
   )
-  fk_commodity_id: string | undefined;
+  @JoinColumn({ name: "fk_commodity_id" })
+  relation_commodity_id: CommodityEntity | undefined;
+
+  @Column({ nullable: true })
+  fk_transaction_hash: string | undefined;
 
   /** 交易哈希 **/
-  @ManyToOne(
+  @OneToOne(
     () => TransactionRecordEntity,
     (transaction_record) => transaction_record.transaction_hash,
+    { nullable: true },
   )
-  fk_transaction_hash: string | undefined;
+  @JoinColumn({ name: "fk_transaction_hash" })
+  relation_transaction_hash: TransactionRecordEntity | undefined;
 
   @Column({
     type: "enum",
