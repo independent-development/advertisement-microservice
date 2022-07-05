@@ -26,6 +26,12 @@ export class CommodityController {
     const result = await this.commodity_table.find({
       relations: ["relation_order"],
       where: { user_id, active_status: "ACTIVE" },
+      join: {
+        alias: "relation_commodity",
+        leftJoinAndSelect: {
+          "relation_commodity.order_id": "order_id",
+        },
+      },
     });
     return result;
   }
