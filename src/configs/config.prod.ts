@@ -19,8 +19,8 @@ export const cache_module_config = {
 export const mysql_module_config: TypeOrmModuleOptions = {
   port: 3306,
   type: "mysql",
-  host: "prod_mysql_service",
-  username: "root",
-  password: "",
-  synchronize: true,
+  host: "yogaho-database.cluster-cmlqabuz16ur.ap-southeast-1.rds.amazonaws.com",
+  username: "yogaho_admin",
+  password: "glyz205070410",
+  // synchronize: true,
 };
