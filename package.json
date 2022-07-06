@@ -9,7 +9,7 @@
     "dev": "cross-env ENV_VALUE=local nest start --watch",
     "debug": "nest start --debug --watch",
     "build": "rimraf dist && nest build",
-    "docker:build:local": "docker build -f dockerfile.local -t advertisement-microservice-local .",
+    "docker:build:local": "docker build --rm -f dockerfile.local -t advertisement-microservice-local .",
     "start:local": "cross-env ENV_VALUE=local pm2-runtime ./dist/main.js",
     "docker:build:test": "docker build --rm -f dockerfile.test -t advertisement-microservice-test .",
     "docker:push:test": "docker tag advertisement-microservice-test 18058173171/advertisement-microservice-test:latest && docker push 18058173171/advertisement-microservice-test:latest",
