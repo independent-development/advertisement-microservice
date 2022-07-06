@@ -11,9 +11,11 @@
     "build": "rimraf dist && nest build",
     "docker:build:local": "docker build -f dockerfile.local -t advertisement-microservice-local .",
     "start:local": "cross-env ENV_VALUE=local pm2-runtime ./dist/main.js",
-    "docker:build:test": "docker build -f dockerfile.test -t advertisement-microservice-test .",
+    "docker:build:test": "docker build --rm -f dockerfile.test -t advertisement-microservice-test .",
+    "docker:push:test": "docker tag advertisement-microservice-test 18058173171/advertisement-microservice-test:latest && docker push 18058173171/advertisement-microservice-test:latest",
     "start:test": "cross-env ENV_VALUE=test pm2-runtime ./dist/main.js",
-    "docker:build:prod": "docker build -f dockerfile.prod -t advertisement-microservice-prod .",
+    "docker:build:prod": "docker build --rm -f dockerfile.prod -t advertisement-microservice-prod .",
+    "docker:push:prod": "docker tag advertisement-microservice-prod 18058173171/advertisement-microservice-prod:latest && docker push 18058173171/advertisement-microservice-prod:latest",
     "start:prod": "cross-env ENV_VALUE=prod pm2-runtime ./dist/main.js",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix"
   },

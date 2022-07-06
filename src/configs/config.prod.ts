@@ -7,7 +7,7 @@ export const client_module_config: ClientsModuleOptions = [
   {
     name: "USER_SERVICES",
     transport: Transport.TCP,
-    options: { host: "127.0.0.1", port: 5050 },
+    options: { host: "user-center-microservice-prod", port: 5050 },
   },
 ];
 export const cache_module_config = {
@@ -22,5 +22,5 @@ export const mysql_module_config: TypeOrmModuleOptions = {
   host: "yogaho-database.cluster-cmlqabuz16ur.ap-southeast-1.rds.amazonaws.com",
   username: "yogaho_admin",
   password: "glyz205070410",
-  // synchronize: true,
+  synchronize: true,
 };
