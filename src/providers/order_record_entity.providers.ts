@@ -11,6 +11,8 @@ import {
 
 import { order_status_enums } from "@/emuns/order_status_enums";
 
+/** 一个订单对应一笔交易,对应多个广告 **/
+
 @Entity({ database: "orders", name: "order_record" })
 export class OrderRecordEntity {
   @PrimaryGeneratedColumn("uuid")
