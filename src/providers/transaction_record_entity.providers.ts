@@ -1,7 +1,16 @@
-import { Entity, PrimaryColumn, Column, OneToOne, Generated } from "typeorm";
+import {
+  Entity,
+  Column,
+  OneToOne,
+  Generated,
+  PrimaryColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+  DeleteDateColumn,
+} from "typeorm";
 
+import { transaction_status_enums } from "@/emuns/transaction_status_enums";
 import { OrderRecordEntity } from "@/providers/order_record_entity.providers";
-import { active_status_enums } from "@/emuns/active_status_enums";
 
 @Entity({ database: "orders", name: "transaction_record" })
 export class TransactionRecordEntity {
@@ -14,34 +23,36 @@ export class TransactionRecordEntity {
   transaction_hash: string | undefined;
 
   @OneToOne(() => OrderRecordEntity, (order_record) => order_record.order_id)
-  fk_order_id: OrderRecordEntity | undefined;
+  relation_order: OrderRecordEntity | undefined;
 
   @Column({
     type: "enum",
+    enum: transaction_status_enums,
+    default: transaction_status_enums.CREATED,
     nullable: false,
-    enum: active_status_enums,
-    default: active_status_enums.ACTIVE,
   })
-  active_status: string | undefined;
+  transaction_status: string | undefined;
 
-  @Column({
-    type: "timestamp",
-    nullable: false,
-    default: () => "NOW()",
+  @CreateDateColumn({
+    type: "datetime",
+    name: "create_time",
+    comment: "创建记录的时间",
   })
-  create_time: string | undefined;
+  createTime: string | undefined;
 
-  @Column({
-    type: "timestamp",
-    nullable: true,
+  @UpdateDateColumn({
+    type: "datetime",
+    name: "update_time",
+    comment: "更新记录的时间",
   })
-  complate_time: string | undefined;
+  updateTime: string | undefined;
 
-  @Column({
-    type: "timestamp",
-    nullable: true,
+  @DeleteDateColumn({
+    type: "datetime",
+    name: "delete_time",
+    comment: "删除记录的时间",
   })
-  update_time: string | undefined;
+  deleteTime: string | undefined;
 
   @Column()
   @Generated("uuid")

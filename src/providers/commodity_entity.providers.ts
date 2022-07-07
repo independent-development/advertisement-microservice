@@ -3,14 +3,15 @@ import {
   Column,
   OneToOne,
   Generated,
+  CreateDateColumn,
+  UpdateDateColumn,
+  DeleteDateColumn,
   PrimaryGeneratedColumn,
 } from "typeorm";
 
 import { OrderRecordEntity } from "@/providers/order_record_entity.providers";
 
-import { status_enums } from "@/emuns/status_enums";
 import { content_type_enums } from "@/emuns/content_type_enums";
-import { active_status_enums } from "@/emuns/active_status_enums";
 import { resource_type_enums } from "@/emuns/resource_type_enums";
 import { calculate_type_enums } from "@/emuns/calculate_type_enums";
 import { position_value_enums } from "@/emuns/position_value_enums";
@@ -109,40 +110,26 @@ export class CommodityEntity {
   })
   link_url: string | undefined;
 
-  @Column({
-    type: "enum",
-    nullable: false,
-    enum: active_status_enums,
-    default: active_status_enums.ACTIVE,
+  @CreateDateColumn({
+    type: "datetime",
+    name: "create_time",
+    comment: "创建记录时间",
   })
-  active_status: string | undefined;
+  createTime: string | undefined;
 
-  @Column({
-    type: "enum",
-    nullable: false,
-    enum: status_enums,
-    default: status_enums.PEDDING,
+  @UpdateDateColumn({
+    type: "datetime",
+    name: "update_time",
+    comment: "更新记录的时间",
   })
-  status: string | undefined;
+  updateTime: string | undefined;
 
-  @Column({
-    type: "timestamp",
-    nullable: false,
-    default: () => "NOW()",
+  @DeleteDateColumn({
+    type: "datetime",
+    name: "delete_time",
+    comment: "删除记录的时间",
   })
-  create_time: string | undefined;
-
-  @Column({
-    type: "timestamp",
-    nullable: true,
-  })
-  complate_time: string | undefined;
-
-  @Column({
-    type: "timestamp",
-    nullable: true,
-  })
-  update_time: string | undefined;
+  deleteTime: string | undefined;
 
   @Column()
   @Generated("uuid")
@@ -152,10 +139,7 @@ export class CommodityEntity {
   @OneToOne(
     () => OrderRecordEntity,
     (order_record) => order_record.relation_commodity,
-    {
-      nullable: true,
-      onDelete: "CASCADE",
-    },
+    { nullable: true },
   )
   relation_order: OrderRecordEntity | undefined;
 }

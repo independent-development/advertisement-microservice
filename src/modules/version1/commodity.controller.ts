@@ -25,13 +25,7 @@ export class CommodityController {
     const { user_id } = await this.auth.get_user_info(API_TOKEN);
     const result = await this.commodity_table.find({
       relations: ["relation_order"],
-      where: { user_id, active_status: "ACTIVE" },
-      // join: {
-      //   alias: "relation_commodity",
-      //   leftJoinAndSelect: {
-      //     "relation_commodity.order_id": "order_id",
-      //   },
-      // },
+      where: { user_id },
     });
     return result;
   }
@@ -66,16 +60,5 @@ export class CommodityController {
       save_commodity_id: save_commodity.commodity_id,
       save_order_id: save_order.order_id,
     };
-  }
-
-  @Post("delete")
-  async delete_commodity(@Request() request) {
-    const { API_TOKEN } = request.cookies;
-    const { commodity_id } = request.body;
-    const { user_id } = await this.auth.get_user_info(API_TOKEN);
-    /*  prettier-ignore */
-    /*  prettier-ignore */
-    await this.commodity_table.delete({commodity_id,user_id});
-    return true;
   }
 }

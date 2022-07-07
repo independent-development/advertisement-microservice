@@ -21,8 +21,8 @@ export class OrdersController {
     const { API_TOKEN } = request.cookies;
     const { user_id } = await this.auth.get_user_info(API_TOKEN);
     const result = await this.order_table.find({
-      relations: ["relation_commodity"],
-      where: { active_status: "ACTIVE", user_id },
+      relations: ["relation_commodity", "relation_transaction_hash"],
+      where: { user_id },
     });
     return result;
   }
@@ -32,15 +32,6 @@ export class OrdersController {
     const { API_TOKEN } = request.cookies;
     const { user_id } = await this.auth.get_user_info(API_TOKEN);
     const order_id = await this.order_table.insert({ user_id });
-    return order_id;
-  }
-
-  @Post("delete")
-  async delete(@Request() request) {
-    const { order_id } = request.body;
-    const { API_TOKEN } = request.cookies;
-    const { user_id } = await this.auth.get_user_info(API_TOKEN);
-    await this.order_table.delete({ order_id, user_id });
     return order_id;
   }
 }
