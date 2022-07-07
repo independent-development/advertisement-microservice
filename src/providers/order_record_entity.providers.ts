@@ -2,6 +2,7 @@ import {
   Entity,
   Column,
   OneToOne,
+  OneToMany,
   JoinColumn,
   PrimaryGeneratedColumn,
 } from "typeorm";
@@ -38,10 +39,6 @@ export class OrderRecordEntity extends BasicEntity {
   @Column({ nullable: true })
   fk_transaction_id: string | undefined;
 
-  @OneToOne(() => PostionEntity, (position) => position.relation_order)
-  @JoinColumn([{ name: "fk_position_id", referencedColumnName: "position_id" }])
-  relation_position: PostionEntity | undefined;
-
-  @Column({ nullable: true })
-  fk_position_id: string | undefined;
+  @OneToMany(() => PostionEntity, (position) => position.relation_order)
+  relation_position: PostionEntity[] | undefined;
 }

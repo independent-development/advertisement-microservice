@@ -1,4 +1,4 @@
-import { Entity, Column, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Entity, Column, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 import { BasicEntity } from "@/providers/basic_entity";
 import { OrderRecordEntity } from "@/providers/order_record_entity.providers";
@@ -14,7 +14,7 @@ export class PostionEntity extends BasicEntity {
   @PrimaryGeneratedColumn("uuid")
   position_id: string | undefined;
 
-  @OneToOne(
+  @ManyToOne(
     () => OrderRecordEntity,
     (order_record) => order_record.relation_position,
   )

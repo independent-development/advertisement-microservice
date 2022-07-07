@@ -56,6 +56,8 @@ export class OrderController {
       subject_detail_page: subject_detail_page.join("/"),
       calculate_computed_date,
       ...otherRequest_body,
+      calculate_type,
+      calculate_value,
       user_id,
     });
 
@@ -64,7 +66,7 @@ export class OrderController {
 
     /** 保存关系 **/
     create_position.relation_order = create_order;
-    create_order.relation_position = create_position;
+    create_order.relation_position = [create_position];
 
     /*  prettier-ignore */
     const save_order = await this.order_table.save(create_order);
