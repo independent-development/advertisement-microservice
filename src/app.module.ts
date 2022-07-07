@@ -6,6 +6,7 @@ import { AppController } from "@/app.controller";
 import { SystemController } from "@/modules/version1/system.controller";
 import { OrdersController } from "@/modules/version1/orders.controller";
 import { CommodityController } from "@/modules/version1/commodity.controller";
+import { TransactionController } from "@/modules/version1/transaction.controller";
 
 import { AuthService } from "@/services/version1/auth.service";
 
@@ -32,6 +33,7 @@ import config from "@/configs";
     SystemController,
     OrdersController,
     CommodityController,
+    TransactionController,
   ],
   providers: [AuthService],
 })

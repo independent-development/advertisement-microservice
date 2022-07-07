@@ -21,7 +21,7 @@ export class OrdersController {
     const { API_TOKEN } = request.cookies;
     const { user_id } = await this.auth.get_user_info(API_TOKEN);
     const result = await this.order_table.find({
-      relations: ["relation_commodity", "relation_transaction_hash"],
+      // relations: ["relation_commodity", "relation_transaction"],
       where: { user_id },
     });
     return result;
