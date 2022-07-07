@@ -1,17 +1,17 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 
-import { CommodityEntity } from "./providers/commodity_entity.providers";
+import { OrderRecordEntity } from "./providers/order_record_entity.providers";
 
 @Injectable()
 export class AppService {
-  constructor(@InjectRepository(CommodityEntity) private commodity_record) {}
+  constructor(@InjectRepository(OrderRecordEntity) private order_table) {}
 
   getHello(): string {
     return "Hello World!";
   }
 
   test_commodityEntityRepository() {
-    return this.commodity_record;
+    return this.order_table;
   }
 }

@@ -1,40 +1,32 @@
-import {
-  Entity,
-  Column,
-  OneToOne,
-  Generated,
-  JoinColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
-  DeleteDateColumn,
-  PrimaryGeneratedColumn,
-} from "typeorm";
+import { Entity, Column, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
-import { TransactionRecordEntity } from "@/providers/transaction_record_entity.providers";
+import { BasicEntity } from "@/providers/basic_entity";
+import { OrderRecordEntity } from "@/providers/order_record_entity.providers";
 
+import { active_status_enums } from "@/emuns/active_status_enums";
 import { content_type_enums } from "@/emuns/content_type_enums";
-import { resource_type_enums } from "@/emuns/resource_type_enums";
-import { calculate_type_enums } from "@/emuns/calculate_type_enums";
 import { position_value_enums } from "@/emuns/position_value_enums";
-import { commodity_status_enums } from "@/emuns/commodity_status_enums";
+import { calculate_type_enums } from "@/emuns/calculate_type_enums";
+import { resource_type_enums } from "@/emuns/resource_type_enums";
 
-@Entity({ database: "orders", name: "commodity_record" })
-export class CommodityEntity {
+@Entity({ database: "orders", name: "position" })
+export class PostionEntity extends BasicEntity {
   @PrimaryGeneratedColumn("uuid")
-  commodity_id: string | undefined;
+  position_id: string | undefined;
 
-  /** 对应到交易记录 **/
   @OneToOne(
-    () => TransactionRecordEntity,
-    (transaction_record) => transaction_record.relation_commodity,
+    () => OrderRecordEntity,
+    (order_record) => order_record.relation_position,
   )
-  @JoinColumn([
-    { name: "fk_transaction_id", referencedColumnName: "transaction_id" },
-  ])
-  relation_transaction: TransactionRecordEntity | undefined;
+  relation_order: OrderRecordEntity | undefined;
 
-  @Column({ nullable: true })
-  fk_transaction_id: string | undefined;
+  @Column({
+    type: "enum",
+    nullable: false,
+    enum: active_status_enums,
+    default: active_status_enums.ACTIVE,
+  })
+  active_status: string | undefined;
 
   /** 投放类型默认为天 **/
   @Column({
@@ -122,37 +114,4 @@ export class CommodityEntity {
     nullable: true,
   })
   link_url: string | undefined;
-
-  @CreateDateColumn({
-    type: "datetime",
-    name: "create_time",
-    comment: "创建记录时间",
-  })
-  create_time: string | undefined;
-
-  @UpdateDateColumn({
-    type: "datetime",
-    name: "update_time",
-    comment: "更新记录的时间",
-  })
-  update_time: string | undefined;
-
-  @DeleteDateColumn({
-    type: "datetime",
-    name: "delete_time",
-    comment: "删除记录的时间",
-  })
-  delete_time: string | undefined;
-
-  @Column({
-    type: "enum",
-    nullable: false,
-    enum: commodity_status_enums,
-    default: commodity_status_enums.CREATED,
-  })
-  commodity_status: string | undefined;
-
-  @Column()
-  @Generated("uuid")
-  user_id: string | undefined;
 }

@@ -1,27 +1,28 @@
-import {
-  Entity,
-  Column,
-  OneToOne,
-  Generated,
-  CreateDateColumn,
-  UpdateDateColumn,
-  DeleteDateColumn,
-  PrimaryGeneratedColumn,
-} from "typeorm";
+import { Entity, Column, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
+import { BasicEntity } from "@/providers/basic_entity";
+import { OrderRecordEntity } from "@/providers/order_record_entity.providers";
 import { transaction_status_enums } from "@/emuns/transaction_status_enums";
-import { CommodityEntity } from "@/providers/commodity_entity.providers";
 
 @Entity({ database: "orders", name: "transaction_record" })
-export class TransactionRecordEntity {
+export class TransactionRecordEntity extends BasicEntity {
   @PrimaryGeneratedColumn("uuid")
   transaction_id: string | undefined;
 
   @OneToOne(
-    () => CommodityEntity,
-    (commodity_record) => commodity_record.relation_transaction,
+    () => OrderRecordEntity,
+    (order_record) => order_record.relation_transaction,
   )
-  relation_commodity: CommodityEntity | undefined;
+  relation_order: OrderRecordEntity | undefined;
+
+  @Column({
+    type: "enum",
+    enum: transaction_status_enums,
+    default: transaction_status_enums.CREATED,
+    comment: "交易状态",
+    nullable: false,
+  })
+  transaction_status: string | undefined;
 
   @Column({
     length: 80,
@@ -38,38 +39,4 @@ export class TransactionRecordEntity {
     comment: "交易金额",
   })
   payment_amount: number | undefined;
-
-  @CreateDateColumn({
-    type: "datetime",
-    name: "create_time",
-    comment: "创建记录的时间",
-  })
-  create_time: string | undefined;
-
-  @UpdateDateColumn({
-    type: "datetime",
-    name: "update_time",
-    comment: "更新记录的时间",
-  })
-  update_time: string | undefined;
-
-  @DeleteDateColumn({
-    type: "datetime",
-    name: "delete_time",
-    comment: "删除记录的时间",
-  })
-  delete_time: string | undefined;
-
-  @Column({
-    type: "enum",
-    enum: transaction_status_enums,
-    default: transaction_status_enums.CREATED,
-    comment: "交易状态",
-    nullable: false,
-  })
-  transaction_status: string | undefined;
-
-  @Column()
-  @Generated("uuid")
-  user_id: string | undefined;
 }

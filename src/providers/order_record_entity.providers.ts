@@ -1,43 +1,22 @@
 import {
   Entity,
   Column,
-  Index,
-  Generated,
-  CreateDateColumn,
-  UpdateDateColumn,
-  DeleteDateColumn,
+  OneToOne,
+  JoinColumn,
   PrimaryGeneratedColumn,
 } from "typeorm";
 
+import { BasicEntity } from "@/providers/basic_entity";
+import { PostionEntity } from "@/providers/position_entity.providers";
+import { TransactionRecordEntity } from "@/providers/transaction_record_entity.providers";
 import { order_status_enums } from "@/emuns/order_status_enums";
 
 /** 一个订单对应一笔交易,对应多个广告 **/
 
 @Entity({ database: "orders", name: "order_record" })
-export class OrderRecordEntity {
+export class OrderRecordEntity extends BasicEntity {
   @PrimaryGeneratedColumn("uuid")
   order_id: string | undefined;
-
-  @CreateDateColumn({
-    type: "datetime",
-    name: "create_time",
-    comment: "创建记录的时间",
-  })
-  create_time: string | undefined;
-
-  @UpdateDateColumn({
-    type: "datetime",
-    name: "update_time",
-    comment: "更新记录的时间",
-  })
-  update_time: string | undefined;
-
-  @DeleteDateColumn({
-    type: "datetime",
-    name: "delete_time",
-    comment: "删除记录的时间",
-  })
-  delete_time: string | undefined;
 
   @Column({
     type: "enum",
@@ -47,8 +26,22 @@ export class OrderRecordEntity {
   })
   order_status: string | undefined;
 
-  @Index()
-  @Column()
-  @Generated("uuid")
-  user_id: string | undefined;
+  @OneToOne(
+    () => TransactionRecordEntity,
+    (transaction_record) => transaction_record.relation_order,
+  )
+  @JoinColumn([
+    { name: "fk_transaction_id", referencedColumnName: "transaction_id" },
+  ])
+  relation_transaction: TransactionRecordEntity | undefined;
+
+  @Column({ nullable: true })
+  fk_transaction_id: string | undefined;
+
+  @OneToOne(() => PostionEntity, (position) => position.relation_order)
+  @JoinColumn([{ name: "fk_position_id", referencedColumnName: "position_id" }])
+  relation_position: PostionEntity | undefined;
+
+  @Column({ nullable: true })
+  fk_position_id: string | undefined;
 }
