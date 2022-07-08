@@ -9,6 +9,7 @@ import { PositionController } from "@/modules/version1/position.controller";
 import { TransactionController } from "@/modules/version1/transaction.controller";
 
 import { AuthService } from "@/services/version1/auth.service";
+import { PostionService } from "@/services/version1/position.services";
 
 import { PostionEntity } from "@/providers/position_entity.providers";
 import { OrderRecordEntity } from "@/providers/order_record_entity.providers";
@@ -35,6 +36,6 @@ import config from "@/configs";
     PositionController,
     TransactionController,
   ],
-  providers: [AuthService],
+  providers: [AuthService, PostionService],
 })
 export class AppModule {}
