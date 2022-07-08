@@ -25,7 +25,7 @@ export class PostionEntity extends BasicEntity {
     type: "enum",
     nullable: false,
     enum: active_status_enums,
-    default: active_status_enums.ACTIVE,
+    default: active_status_enums.UNACTIVE,
   })
   active_status: string | undefined;
 
