@@ -27,6 +27,7 @@ export class OrderRecordEntity extends BasicEntity {
   })
   order_status: string | undefined;
 
+  /** 一个订单对应多个广告位 **/
   @OneToOne(
     () => TransactionRecordEntity,
     (transaction_record) => transaction_record.relation_order,

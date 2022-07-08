@@ -14,6 +14,7 @@ export class PostionEntity extends BasicEntity {
   @PrimaryGeneratedColumn("uuid")
   position_id: string | undefined;
 
+  /** 多个广告位对应一个订单 **/
   @ManyToOne(
     () => OrderRecordEntity,
     (order_record) => order_record.relation_position,
@@ -28,90 +29,99 @@ export class PostionEntity extends BasicEntity {
   })
   active_status: string | undefined;
 
-  /** 投放类型默认为天 **/
   @Column({
     type: "enum",
     nullable: false,
     enum: calculate_type_enums,
     default: calculate_type_enums.DAY,
+    comment: "投放类型默认为天",
   })
   calculate_type: string | undefined;
 
-  /** 投放周期的数值 **/
   @Column({
     type: "int",
     nullable: false,
     default: 1,
+    comment: "投放周期的数值",
   })
   calculate_value: number | undefined;
 
-  /** 投放周期计算后的日期 **/
-  @Column({ type: "datetime" })
+  @Column({
+    type: "datetime",
+    comment: "投放周期计算后的日期",
+  })
   calculate_computed_date: string | undefined;
 
-  /** 投放在网站的具体的主题详情页 **/
   @Column({
     type: "varchar",
     nullable: false,
     length: 200,
+    comment: "投放在网站的具体的主题详情页",
   })
   subject_detail_page: string | undefined;
 
-  /** 广告位的具体值 **/
   @Column({
     type: "enum",
     nullable: false,
     enum: position_value_enums,
     default: position_value_enums.PAGE_TOP,
+    comment: "广告位的具体值",
   })
   position_value: string | undefined;
 
-  /** 广告类型默认为图片IMAGE **/
   @Column({
     type: "enum",
     nullable: false,
     enum: content_type_enums,
     default: content_type_enums.IMAGE,
+    comment: "广告类型默认为图片IMAGE",
   })
   content_type: string | undefined;
 
-  /** 广告资源类型 **/
   @Column({
     type: "enum",
     nullable: false,
     enum: resource_type_enums,
     default: resource_type_enums.OSS_URL,
+    comment: "广告资源类型",
   })
   resource_type: string | undefined;
 
-  /** 广告资源的URL链接 **/
   @Column({
     type: "varchar",
     length: 200,
+    comment: "广告资源的URL链接",
   })
   resource_link: string | undefined;
 
-  /** 广告资源的标题 **/
   @Column({
     type: "varchar",
     length: 36,
     nullable: true,
+    comment: "广告资源的标题",
   })
   title: string | undefined;
 
-  /** 广告资源的详情 **/
   @Column({
     type: "varchar",
     length: 200,
     nullable: true,
+    comment: "广告资源的详情",
   })
   discription: string | undefined;
 
-  /** 广告资源跳转的URL **/
   @Column({
     type: "varchar",
     length: 200,
     nullable: true,
+    comment: "广告资源跳转的URL",
   })
   link_url: string | undefined;
+
+  @Column({
+    type: "int",
+    nullable: true,
+    comment: "观看量",
+  })
+  watch: number | undefined;
 }
