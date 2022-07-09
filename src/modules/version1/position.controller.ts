@@ -10,7 +10,7 @@ import { TransactionRecordEntity } from "@/providers/transaction_record_entity.p
 import get_calculate_computed_date from "@/utils/get_calculate_computed_date";
 
 /** 商品控制器 **/
-@Controller("/v1/position/")
+@Controller("/position/v1/")
 export class PositionController {
   constructor(
     private readonly auth: AuthService,

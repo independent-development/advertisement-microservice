@@ -4,7 +4,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { AuthService } from "@/services/version1/auth.service";
 import { TransactionRecordEntity } from "@/providers/transaction_record_entity.providers";
 
-@Controller("/v1/transaction/")
+@Controller("/transaction/v1/")
 export class TransactionController {
   constructor(
     private readonly auth: AuthService,

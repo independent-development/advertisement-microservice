@@ -9,7 +9,7 @@ import { OrderRecordEntity } from "@/providers/order_record_entity.providers";
 import { TransactionRecordEntity } from "@/providers/transaction_record_entity.providers";
 
 /** 商品控制器 **/
-@Controller("/v1/order/")
+@Controller("/order/v1/")
 export class OrderController {
   constructor(
     private readonly auth: AuthService,

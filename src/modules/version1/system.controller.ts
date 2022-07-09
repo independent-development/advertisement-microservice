@@ -8,7 +8,7 @@ import { FileInterceptor } from "@nestjs/platform-express";
 
 import { s3client_upload_file } from "@/utils/s3client_upload";
 
-@Controller("/v1/system")
+@Controller("/system/v1")
 export class SystemController {
   @Post("upload")
   @UseInterceptors(FileInterceptor("file"))
