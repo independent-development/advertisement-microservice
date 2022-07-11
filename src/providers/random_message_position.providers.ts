@@ -29,8 +29,8 @@ export class RandomMessagePostionEntity extends BasicEntity {
   @Column({
     type: "int",
     nullable: false,
-    default: 1000,
-    comment: "随机信息流广告的投放方式为按浏览次数计费,1000次起步",
+    default: 100,
+    comment: "随机信息流广告的投放方式为按浏览次数计费,最低100次",
   })
   calculate_value: number | undefined;
 
