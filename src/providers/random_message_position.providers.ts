@@ -1,23 +1,20 @@
 import { Entity, Column, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
-import { BasicEntity } from "@/providers/basic_entity";
-import { OrderRecordEntity } from "@/providers/order_record_entity.providers";
+import { BasicEntity } from "@/providers/basic.providers";
+import { OrderRecordEntity } from "@/providers/order_record.providers";
 
 import { active_status_enums } from "@/emuns/active_status_enums";
-import { content_type_enums } from "@/emuns/content_type_enums";
-import { position_value_enums } from "@/emuns/position_value_enums";
-import { calculate_type_enums } from "@/emuns/calculate_type_enums";
 import { resource_type_enums } from "@/emuns/resource_type_enums";
 
-@Entity({ database: "orders", name: "position" })
-export class PostionEntity extends BasicEntity {
+@Entity({ database: "positions", name: "random_message_position" })
+export class RandomMessagePostionEntity extends BasicEntity {
   @PrimaryGeneratedColumn("uuid")
   position_id: string | undefined;
 
   /** 多个广告位对应一个订单 **/
   @ManyToOne(
     () => OrderRecordEntity,
-    (order_record) => order_record.relation_position,
+    (order_record) => order_record.relation_random_message_position,
   )
   relation_order: OrderRecordEntity | undefined;
 
@@ -30,53 +27,12 @@ export class PostionEntity extends BasicEntity {
   active_status: string | undefined;
 
   @Column({
-    type: "enum",
-    nullable: false,
-    enum: calculate_type_enums,
-    default: calculate_type_enums.DAY,
-    comment: "投放类型默认为天",
-  })
-  calculate_type: string | undefined;
-
-  @Column({
     type: "int",
     nullable: false,
-    default: 1,
-    comment: "投放周期的数值",
+    default: 1000,
+    comment: "随机信息流广告的投放方式为按浏览次数计费,1000次起步",
   })
   calculate_value: number | undefined;
-
-  @Column({
-    type: "datetime",
-    comment: "投放周期计算后的日期",
-  })
-  calculate_computed_date: string | undefined;
-
-  @Column({
-    type: "varchar",
-    nullable: false,
-    length: 200,
-    comment: "投放在网站的具体的主题详情页",
-  })
-  subject_detail_page: string | undefined;
-
-  @Column({
-    type: "enum",
-    nullable: false,
-    enum: position_value_enums,
-    default: position_value_enums.PAGE_TOP,
-    comment: "广告位的具体值",
-  })
-  position_value: string | undefined;
-
-  @Column({
-    type: "enum",
-    nullable: false,
-    enum: content_type_enums,
-    default: content_type_enums.IMAGE,
-    comment: "广告类型默认为图片IMAGE",
-  })
-  content_type: string | undefined;
 
   @Column({
     type: "enum",

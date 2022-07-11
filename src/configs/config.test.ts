@@ -10,6 +10,11 @@ export const client_module_config: ClientsModuleOptions = [
     options: { host: "user-center-microservice-test", port: 5050 },
   },
 ];
+export const redis_module_config = {
+  config: {
+    url: "redis://localhost:6379",
+  },
+};
 export const cache_module_config = {
   store: redisStore,
   host: "test_redis_service",

@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 
-import { OrderRecordEntity } from "./providers/order_record_entity.providers";
+import { OrderRecordEntity } from "./providers/order_record.providers";
 
 @Injectable()
 export class AppService {

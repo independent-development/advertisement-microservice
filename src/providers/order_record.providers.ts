@@ -7,9 +7,10 @@ import {
   PrimaryGeneratedColumn,
 } from "typeorm";
 
-import { BasicEntity } from "@/providers/basic_entity";
-import { PostionEntity } from "@/providers/position_entity.providers";
-import { TransactionRecordEntity } from "@/providers/transaction_record_entity.providers";
+import { BasicEntity } from "@/providers/basic.providers";
+import { RandomMessagePostionEntity } from "@/providers/random_message_position.providers";
+import { BannerFixedPostionEntity } from "@/providers/banner_fixed_position.providers";
+import { TransactionRecordEntity } from "@/providers/transaction_record.providers";
 import { order_status_enums } from "@/emuns/order_status_enums";
 
 /** 一个订单对应一笔交易,对应多个广告 **/
@@ -40,6 +41,15 @@ export class OrderRecordEntity extends BasicEntity {
   @Column({ nullable: true })
   fk_transaction_id: string | undefined;
 
-  @OneToMany(() => PostionEntity, (position) => position.relation_order)
-  relation_position: PostionEntity[] | undefined;
+  @OneToMany(
+    () => BannerFixedPostionEntity,
+    (banner_fixed_position) => banner_fixed_position.relation_order,
+  )
+  relation_banner_fixed_position: BannerFixedPostionEntity[] | undefined;
+
+  @OneToMany(
+    () => RandomMessagePostionEntity,
+    (random_message_position) => random_message_position.relation_order,
+  )
+  relation_random_message_position: RandomMessagePostionEntity[] | undefined;
 }

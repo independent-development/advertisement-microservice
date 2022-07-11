@@ -1,7 +1,7 @@
 import { Entity, Column, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
-import { BasicEntity } from "@/providers/basic_entity";
-import { OrderRecordEntity } from "@/providers/order_record_entity.providers";
+import { BasicEntity } from "@/providers/basic.providers";
+import { OrderRecordEntity } from "@/providers/order_record.providers";
 import { transaction_status_enums } from "@/emuns/transaction_status_enums";
 
 @Entity({ database: "orders", name: "transaction_record" })

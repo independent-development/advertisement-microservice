@@ -2,7 +2,7 @@ import { Controller, Get, Post, Request } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 
 import { AuthService } from "@/services/version1/auth.service";
-import { TransactionRecordEntity } from "@/providers/transaction_record_entity.providers";
+import { TransactionRecordEntity } from "@/providers/transaction_record.providers";
 
 @Controller("/transaction/v1/")
 export class TransactionController {
