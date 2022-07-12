@@ -21,6 +21,13 @@ export class OrderRecordEntity extends BasicEntity {
   order_id: string | undefined;
 
   @Column({
+    type: "int",
+    nullable: false,
+    comment: "计算后的应付金额",
+  })
+  computed_amount: number | undefined;
+
+  @Column({
     type: "enum",
     nullable: false,
     enum: order_status_enums,

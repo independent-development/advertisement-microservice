@@ -10,6 +10,7 @@ import { TransactionController } from "@/modules/version1/transaction.controller
 import { RandomMessagePositionController } from "@/modules/version1/random_message_position.controller";
 
 import { AuthService } from "@/services/version1/auth.service";
+import { AmountService } from "@/services/version1/amount.service";
 import { PostionService } from "@/services/version1/position.services";
 
 import { OrderRecordEntity } from "@/providers/order_record.providers";
@@ -45,6 +46,6 @@ import config from "@/configs";
     TransactionController,
     RandomMessagePositionController,
   ],
-  providers: [AuthService, PostionService],
+  providers: [AuthService, AmountService, PostionService],
 })
 export class AppModule {}

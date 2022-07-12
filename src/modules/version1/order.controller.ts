@@ -33,4 +33,19 @@ export class OrderController {
     });
     return result;
   }
+
+  @Get("detail")
+  async get_order_detail(@Request() request) {
+    const { order_id } = request.query;
+    const { API_TOKEN } = request.cookies;
+    const { user_id } = await this.auth.get_user_info(API_TOKEN);
+    const result = await this.order_table.findOne({
+      where: { order_id, user_id },
+      relations: [
+        "relation_banner_fixed_position",
+        "relation_random_message_position",
+      ],
+    });
+    return result;
+  }
 }

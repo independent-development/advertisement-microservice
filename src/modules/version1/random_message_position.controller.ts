@@ -4,6 +4,7 @@ import { InjectRedis, Redis } from "@nestjs-modules/ioredis";
 import { Controller, Get, Post, Request } from "@nestjs/common";
 
 import { AuthService } from "@/services/version1/auth.service";
+import { AmountService } from "@/services/version1/amount.service";
 
 import { OrderRecordEntity } from "@/providers/order_record.providers";
 import { TransactionRecordEntity } from "@/providers/transaction_record.providers";
@@ -14,6 +15,7 @@ import { RandomMessagePostionEntity } from "@/providers/random_message_position.
 export class RandomMessagePositionController {
   constructor(
     private readonly auth: AuthService,
+    private readonly amount: AmountService,
     private readonly dataSource: DataSource,
     @InjectRedis() private readonly redis: Redis,
     @InjectRepository(OrderRecordEntity) private order_table,
@@ -22,6 +24,14 @@ export class RandomMessagePositionController {
     @InjectRepository(RandomMessagePostionEntity) private random_message_position_table,
   ) {}
 
+  /** 获取随机广告位的报价,按次计价,一次收费0.25美元 **/
+  @Get("amount")
+  async get_random_message_amount(@Request() request) {
+    const { calculate_value } = request.query;
+    return this.amount.random_message_amount(calculate_value);
+  }
+
+  /** 创建随机信息流广告位 **/
   @Post("create")
   async create_random_message_position(@Request() request) {
     const position_info = request.body;
@@ -32,7 +42,9 @@ export class RandomMessagePositionController {
     await queryRunner.startTransaction();
     try {
       /* prettier-ignore */
-      const create_order = await queryRunner.manager.create(OrderRecordEntity,{ user_id });
+      const computed_amount=this.amount.random_message_amount(position_info.calculate_value);
+      /* prettier-ignore */
+      const create_order = await queryRunner.manager.create(OrderRecordEntity,{ computed_amount,user_id });
       /* prettier-ignore */
       const create_position=await queryRunner.manager.create(RandomMessagePostionEntity,{...position_info,user_id});
       /** 创建映射关系 **/
@@ -43,13 +55,19 @@ export class RandomMessagePositionController {
       /* prettier-ignore */
       await queryRunner.manager.save(RandomMessagePostionEntity,create_position);
       await queryRunner.commitTransaction();
+      return {
+        order_id: create_order.order_id,
+        position_id: create_position.position_id,
+      };
     } catch (error) {
       await queryRunner.rollbackTransaction();
+      throw new Error(error.message);
     } finally {
       await queryRunner.release();
     }
   }
 
+  /** 获取随机信息流广告位列表 **/
   @Get("list")
   async list_all_random_message_position(@Request() request) {
     const { API_TOKEN } = request.cookies;
@@ -59,7 +77,7 @@ export class RandomMessagePositionController {
     });
     return result;
   }
-
+  /** 获取随机信息流广告位详情 **/
   @Get("detail")
   async get_random_message_position_detail(@Request() request) {
     const { API_TOKEN } = request.cookies;
@@ -70,6 +88,7 @@ export class RandomMessagePositionController {
     return result;
   }
 
+  /** 更新随机信息流广告位信息 **/
   @Post("update")
   async update_random_message_position(@Request() request) {
     /*  prettier-ignore */
