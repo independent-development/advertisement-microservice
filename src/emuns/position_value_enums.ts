@@ -1,8 +1,0 @@
-export enum position_value_enums {
-  PAGE_TOP = "PAGE_TOP",
-  PAGE_LEFT = "PAGE_LEFT",
-  PAGE_RIGHT = "PAGE_RIGHT",
-  PAGE_BOTTOM = "PAGE_BOTTOM",
-  VIDEO_START = "VIDEO_START",
-  VIDEO_END = "VIDEO_END",
-}

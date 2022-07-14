@@ -3,4 +3,5 @@ export enum calculate_type_enums {
   MONTH = "MONTH",
   DAY = "DAY",
   HOUR = "HOUR",
+  NUMBER = "NUMBER",
 }

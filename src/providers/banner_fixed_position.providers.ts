@@ -5,9 +5,8 @@ import { OrderRecordEntity } from "@/providers/order_record.providers";
 
 import { active_status_enums } from "@/emuns/active_status_enums";
 import { content_type_enums } from "@/emuns/content_type_enums";
-import { position_value_enums } from "@/emuns/position_value_enums";
 import { calculate_type_enums } from "@/emuns/calculate_type_enums";
-import { resource_type_enums } from "@/emuns/resource_type_enums";
+import { length_width_ratio_enum } from "@/emuns/length_width_ratio_enum";
 
 @Entity({ database: "positions", name: "banner_fixed_position" })
 export class BannerFixedPostionEntity extends BasicEntity {
@@ -53,21 +52,13 @@ export class BannerFixedPostionEntity extends BasicEntity {
   calculate_computed_date: string | undefined;
 
   @Column({
-    type: "varchar",
-    nullable: false,
-    length: 200,
-    comment: "投放在网站的具体的主题详情页",
-  })
-  subject_detail_page: string | undefined;
-
-  @Column({
     type: "enum",
     nullable: false,
-    enum: position_value_enums,
-    default: position_value_enums.PAGE_TOP,
-    comment: "广告位的具体值",
+    enum: length_width_ratio_enum,
+    default: length_width_ratio_enum.W16H9,
+    comment: "资源长宽比,默认16:9",
   })
-  position_value: string | undefined;
+  length_width_ratio: string | undefined;
 
   @Column({
     type: "enum",
@@ -77,15 +68,6 @@ export class BannerFixedPostionEntity extends BasicEntity {
     comment: "广告类型默认为图片IMAGE",
   })
   content_type: string | undefined;
-
-  @Column({
-    type: "enum",
-    nullable: false,
-    enum: resource_type_enums,
-    default: resource_type_enums.OSS_URL,
-    comment: "广告资源类型",
-  })
-  resource_type: string | undefined;
 
   @Column({
     type: "varchar",
@@ -116,7 +98,7 @@ export class BannerFixedPostionEntity extends BasicEntity {
     nullable: true,
     comment: "广告资源跳转的URL",
   })
-  link_url: string | undefined;
+  open_link_url: string | undefined;
 
   @Column({
     type: "int",

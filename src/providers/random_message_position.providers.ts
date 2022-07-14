@@ -4,7 +4,8 @@ import { BasicEntity } from "@/providers/basic.providers";
 import { OrderRecordEntity } from "@/providers/order_record.providers";
 
 import { active_status_enums } from "@/emuns/active_status_enums";
-import { resource_type_enums } from "@/emuns/resource_type_enums";
+import { calculate_type_enums } from "@/emuns/calculate_type_enums";
+import { length_width_ratio_enum } from "@/emuns/length_width_ratio_enum";
 
 @Entity({ database: "positions", name: "random_message_position" })
 export class RandomMessagePostionEntity extends BasicEntity {
@@ -27,6 +28,15 @@ export class RandomMessagePostionEntity extends BasicEntity {
   active_status: string | undefined;
 
   @Column({
+    type: "enum",
+    nullable: false,
+    enum: calculate_type_enums,
+    default: calculate_type_enums.NUMBER,
+    comment: "投放类型默认为次",
+  })
+  calculate_type: string | undefined;
+
+  @Column({
     type: "int",
     nullable: false,
     default: 100,
@@ -37,11 +47,11 @@ export class RandomMessagePostionEntity extends BasicEntity {
   @Column({
     type: "enum",
     nullable: false,
-    enum: resource_type_enums,
-    default: resource_type_enums.OSS_URL,
-    comment: "广告资源类型",
+    enum: length_width_ratio_enum,
+    default: length_width_ratio_enum.W1H1,
+    comment: "资源长宽比,默认1:1",
   })
-  resource_type: string | undefined;
+  length_width_ratio: string | undefined;
 
   @Column({
     type: "varchar",
@@ -72,7 +82,7 @@ export class RandomMessagePostionEntity extends BasicEntity {
     nullable: true,
     comment: "广告资源跳转的URL",
   })
-  link_url: string | undefined;
+  open_link_url: string | undefined;
 
   @Column({
     type: "int",
