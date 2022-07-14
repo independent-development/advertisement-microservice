@@ -6,7 +6,7 @@ import { OrderRecordEntity } from "@/providers/order_record.providers";
 import { active_status_enums } from "@/emuns/active_status_enums";
 import { content_type_enums } from "@/emuns/content_type_enums";
 import { calculate_type_enums } from "@/emuns/calculate_type_enums";
-import { length_width_ratio_enum } from "@/emuns/length_width_ratio_enum";
+import { banner_fixed_length_width_ratio_enum } from "@/emuns/banner_fixed_length_width_ratio_enum";
 
 @Entity({ database: "positions", name: "banner_fixed_position" })
 export class BannerFixedPostionEntity extends BasicEntity {
@@ -54,8 +54,8 @@ export class BannerFixedPostionEntity extends BasicEntity {
   @Column({
     type: "enum",
     nullable: false,
-    enum: length_width_ratio_enum,
-    default: length_width_ratio_enum.W16H9,
+    enum: banner_fixed_length_width_ratio_enum,
+    default: banner_fixed_length_width_ratio_enum.W25H7,
     comment: "资源长宽比,默认16:9",
   })
   length_width_ratio: string | undefined;

@@ -5,6 +5,7 @@ import { Controller, Get, Post, Request } from "@nestjs/common";
 
 import { AuthService } from "@/services/version1/auth.service";
 import { AmountService } from "@/services/version1/amount.service";
+import { PostionService } from "@/services/version1/position.services";
 
 import { OrderRecordEntity } from "@/providers/order_record.providers";
 import { TransactionRecordEntity } from "@/providers/transaction_record.providers";
@@ -16,6 +17,7 @@ export class MessageCardPositionController {
   constructor(
     private readonly auth: AuthService,
     private readonly amount: AmountService,
+    private readonly position: PostionService,
     private readonly dataSource: DataSource,
     @InjectRedis() private readonly redis: Redis,
     @InjectRepository(OrderRecordEntity) private order_table,
@@ -34,7 +36,7 @@ export class MessageCardPositionController {
   /** 创建随机信息流广告位 **/
   @Post("create")
   async create_random_message_position(@Request() request) {
-    const position_info = request.body;
+    const { position_info } = request.body;
     const { API_TOKEN } = request.cookies;
     const { user_id } = await this.auth.get_user_info(API_TOKEN);
     const queryRunner = this.dataSource.createQueryRunner();
@@ -46,7 +48,11 @@ export class MessageCardPositionController {
       /* prettier-ignore */
       const create_order = await queryRunner.manager.create(OrderRecordEntity,{ computed_amount,user_id });
       /* prettier-ignore */
-      const create_position=await queryRunner.manager.create(MessageCardPostionEntity,{...position_info,user_id});
+      const create_position=await queryRunner.manager.create(MessageCardPostionEntity,{
+        calculate_computed_date:this.position.computed_last_date(position_info),
+        ...position_info,
+        user_id
+      });
       /** 创建映射关系 **/
       create_position.relation_order = create_order;
       create_order.relation_random_message_position = [create_position];
@@ -96,7 +102,10 @@ export class MessageCardPositionController {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const {position_id,...position_info} = request.body;
     /*  prettier-ignore */
-    await this.message_card_position_table.update({ position_id },position_info);
+    await this.message_card_position_table.update({ position_id },{
+      calculate_computed_date:this.position.computed_last_date(position_info),
+      ...position_info
+    });
     return true;
   }
 }

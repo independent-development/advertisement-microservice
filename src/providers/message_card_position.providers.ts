@@ -5,7 +5,7 @@ import { OrderRecordEntity } from "@/providers/order_record.providers";
 
 import { active_status_enums } from "@/emuns/active_status_enums";
 import { calculate_type_enums } from "@/emuns/calculate_type_enums";
-import { length_width_ratio_enum } from "@/emuns/length_width_ratio_enum";
+import { message_card_length_width_ratio_enum } from "@/emuns/message_card_length_width_ratio_enum";
 
 @Entity({ database: "positions", name: "message_card_position" })
 export class MessageCardPostionEntity extends BasicEntity {
@@ -45,10 +45,17 @@ export class MessageCardPostionEntity extends BasicEntity {
   calculate_value: number | undefined;
 
   @Column({
+    type: "datetime",
+    nullable: true,
+    comment: "投放周期计算后的日期",
+  })
+  calculate_computed_date: string | undefined;
+
+  @Column({
     type: "enum",
     nullable: false,
-    enum: length_width_ratio_enum,
-    default: length_width_ratio_enum.W1H1,
+    enum: message_card_length_width_ratio_enum,
+    default: message_card_length_width_ratio_enum.W1H1,
     comment: "资源长宽比,默认1:1",
   })
   length_width_ratio: string | undefined;
