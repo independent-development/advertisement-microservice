@@ -7,7 +7,7 @@ import { AppController } from "@/app.controller";
 import { OrderController } from "@/modules/version1/order.controller";
 import { SystemController } from "@/modules/version1/system.controller";
 import { TransactionController } from "@/modules/version1/transaction.controller";
-import { RandomMessagePositionController } from "@/modules/version1/random_message_position.controller";
+import { MessageCardPositionController } from "@/modules/version1/message_card_position.controller";
 
 import { AuthService } from "@/services/version1/auth.service";
 import { AmountService } from "@/services/version1/amount.service";
@@ -15,7 +15,7 @@ import { PostionService } from "@/services/version1/position.services";
 
 import { OrderRecordEntity } from "@/providers/order_record.providers";
 import { TransactionRecordEntity } from "@/providers/transaction_record.providers";
-import { RandomMessagePostionEntity } from "@/providers/random_message_position.providers";
+import { MessageCardPostionEntity } from "@/providers/message_card_position.providers";
 import { BannerFixedPostionEntity } from "@/providers/banner_fixed_position.providers";
 
 import config from "@/configs";
@@ -29,14 +29,14 @@ import config from "@/configs";
       ...config.mysql_module_config,
       entities: [
         OrderRecordEntity,
-        RandomMessagePostionEntity,
+        MessageCardPostionEntity,
         TransactionRecordEntity,
         BannerFixedPostionEntity,
       ],
     }),
     TypeOrmModule.forFeature([OrderRecordEntity]),
     TypeOrmModule.forFeature([BannerFixedPostionEntity]),
-    TypeOrmModule.forFeature([RandomMessagePostionEntity]),
+    TypeOrmModule.forFeature([MessageCardPostionEntity]),
     TypeOrmModule.forFeature([TransactionRecordEntity]),
   ],
   controllers: [
@@ -44,7 +44,7 @@ import config from "@/configs";
     OrderController,
     SystemController,
     TransactionController,
-    RandomMessagePositionController,
+    MessageCardPositionController,
   ],
   providers: [AuthService, AmountService, PostionService],
 })

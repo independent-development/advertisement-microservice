@@ -8,7 +8,7 @@ import {
 } from "typeorm";
 
 import { BasicEntity } from "@/providers/basic.providers";
-import { RandomMessagePostionEntity } from "@/providers/random_message_position.providers";
+import { MessageCardPostionEntity } from "@/providers/message_card_position.providers";
 import { BannerFixedPostionEntity } from "@/providers/banner_fixed_position.providers";
 import { TransactionRecordEntity } from "@/providers/transaction_record.providers";
 import { order_status_enums } from "@/emuns/order_status_enums";
@@ -55,8 +55,8 @@ export class OrderRecordEntity extends BasicEntity {
   relation_banner_fixed_position: BannerFixedPostionEntity[] | undefined;
 
   @OneToMany(
-    () => RandomMessagePostionEntity,
+    () => MessageCardPostionEntity,
     (random_message_position) => random_message_position.relation_order,
   )
-  relation_random_message_position: RandomMessagePostionEntity[] | undefined;
+  relation_random_message_position: MessageCardPostionEntity[] | undefined;
 }

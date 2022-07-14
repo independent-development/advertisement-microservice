@@ -7,8 +7,8 @@ import { active_status_enums } from "@/emuns/active_status_enums";
 import { calculate_type_enums } from "@/emuns/calculate_type_enums";
 import { length_width_ratio_enum } from "@/emuns/length_width_ratio_enum";
 
-@Entity({ database: "positions", name: "random_message_position" })
-export class RandomMessagePostionEntity extends BasicEntity {
+@Entity({ database: "positions", name: "message_card_position" })
+export class MessageCardPostionEntity extends BasicEntity {
   @PrimaryGeneratedColumn("uuid")
   position_id: string | undefined;
 

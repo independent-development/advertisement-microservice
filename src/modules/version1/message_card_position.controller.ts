@@ -8,11 +8,11 @@ import { AmountService } from "@/services/version1/amount.service";
 
 import { OrderRecordEntity } from "@/providers/order_record.providers";
 import { TransactionRecordEntity } from "@/providers/transaction_record.providers";
-import { RandomMessagePostionEntity } from "@/providers/random_message_position.providers";
+import { MessageCardPostionEntity } from "@/providers/message_card_position.providers";
 
 /** 商品控制器 **/
-@Controller("/random_message_position/v1/")
-export class RandomMessagePositionController {
+@Controller("/message_card_position/v1/")
+export class MessageCardPositionController {
   constructor(
     private readonly auth: AuthService,
     private readonly amount: AmountService,
@@ -21,7 +21,7 @@ export class RandomMessagePositionController {
     @InjectRepository(OrderRecordEntity) private order_table,
     @InjectRepository(TransactionRecordEntity) private transaction_table,
     /*  prettier-ignore */
-    @InjectRepository(RandomMessagePostionEntity) private random_message_position_table,
+    @InjectRepository(MessageCardPostionEntity) private message_card_position_table,
   ) {}
 
   /** 获取随机广告位的报价,按次计价,一次收费0.25美元 **/
@@ -46,14 +46,14 @@ export class RandomMessagePositionController {
       /* prettier-ignore */
       const create_order = await queryRunner.manager.create(OrderRecordEntity,{ computed_amount,user_id });
       /* prettier-ignore */
-      const create_position=await queryRunner.manager.create(RandomMessagePostionEntity,{...position_info,user_id});
+      const create_position=await queryRunner.manager.create(MessageCardPostionEntity,{...position_info,user_id});
       /** 创建映射关系 **/
       create_position.relation_order = create_order;
       create_order.relation_random_message_position = [create_position];
       /* prettier-ignore */
       await queryRunner.manager.save(OrderRecordEntity,create_order);
       /* prettier-ignore */
-      await queryRunner.manager.save(RandomMessagePostionEntity,create_position);
+      await queryRunner.manager.save(MessageCardPostionEntity,create_position);
       await queryRunner.commitTransaction();
       return {
         order_id: create_order.order_id,
@@ -72,7 +72,7 @@ export class RandomMessagePositionController {
   async list_all_random_message_position(@Request() request) {
     const { API_TOKEN } = request.cookies;
     const { user_id } = await this.auth.get_user_info(API_TOKEN);
-    const result = await this.random_message_position_table.find({
+    const result = await this.message_card_position_table.find({
       where: { user_id },
     });
     return result;
@@ -84,7 +84,7 @@ export class RandomMessagePositionController {
     const { position_id } = request.query;
     const { user_id } = await this.auth.get_user_info(API_TOKEN);
     /*  prettier-ignore */
-    const result = await this.random_message_position_table.findOneBy({position_id,user_id});
+    const result = await this.message_card_position_table.findOneBy({position_id,user_id});
     return result;
   }
 
@@ -96,7 +96,7 @@ export class RandomMessagePositionController {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const {position_id,...position_info} = request.body;
     /*  prettier-ignore */
-    await this.random_message_position_table.update({ position_id },position_info);
+    await this.message_card_position_table.update({ position_id },position_info);
     return true;
   }
 }

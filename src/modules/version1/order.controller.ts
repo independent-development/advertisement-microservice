@@ -6,7 +6,7 @@ import { PostionService } from "@/services/version1/position.services";
 
 import { OrderRecordEntity } from "@/providers/order_record.providers";
 import { TransactionRecordEntity } from "@/providers/transaction_record.providers";
-import { RandomMessagePostionEntity } from "@/providers/random_message_position.providers";
+import { MessageCardPostionEntity } from "@/providers/message_card_position.providers";
 
 /** 商品控制器 **/
 @Controller("/order/v1/")
@@ -17,7 +17,7 @@ export class OrderController {
     @InjectRepository(OrderRecordEntity) private order_table,
     @InjectRepository(TransactionRecordEntity) private transaction_table,
     /* prettier-ignore */
-    @InjectRepository(RandomMessagePostionEntity) private random_message_position_table,
+    @InjectRepository(MessageCardPostionEntity) private random_message_position_table,
   ) {}
 
   @Get("list")
